@@ -11,7 +11,7 @@ import java.util.Scanner;
 import org.apache.kafka.clients.producer.KafkaProducer;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.clients.producer.ProducerRecord;
-
+import kafka.admin.AdminUtils;
 import java.util.Properties;
 import java.util.StringTokenizer;
 import org.apache.kafka.clients.producer.Producer;
@@ -21,15 +21,16 @@ import org.apache.kafka.clients.producer.Producer;
  * @author Francisco
  */
 public class KafkaProducerStream {
- private static Scanner in;
+// private static Scanner in;
           public static void main(String[] argv)throws Exception {
              /* if (argv.length != 1) {
                   System.err.println("Please specify 1 parameters ");
                   System.exit(-1);
               } */
-              String topicName = "test";
-              in = new Scanner(System.in);
-              System.out.println("Enter message(type exit to quit)");
+              String topicName = "topic-test";
+              /* Static call to create a new topic in Kafka */
+              KafkaTopicCreator.create(topicName,2,3); 
+            //  in = new Scanner(System.in);
 
               //Configure the Producer
               Properties configProperties = new Properties();
@@ -53,7 +54,7 @@ public class KafkaProducerStream {
 	} catch (IOException e) {
 		e.printStackTrace();
 	}
-              in.close();
+             // in.close();
               producer.close();
           }   
 }

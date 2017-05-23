@@ -28,7 +28,7 @@ public class KafkaTopicCreator {
         int sessionTimeoutMs = 10 * 1000;
         int connectionTimeoutMs = 8 * 1000;
 
-        String topic = "my-topic";
+        String topic = "test-topic";
         int partitions = 2;
         int replication = 3;
         Properties topicConfig = new Properties(); // add per-topic configurations settings here
@@ -47,7 +47,11 @@ public class KafkaTopicCreator {
         boolean isSecureKafkaCluster = false;
 
         ZkUtils zkUtils = new ZkUtils(zkClient, new ZkConnection(zookeeperConnect), isSecureKafkaCluster);
-        AdminUtils.createTopic(zkUtils, topic, partitions, replication, topicConfig, RackAwareMode.Enforced$.MODULE$);
+        if(!AdminUtils.topicExists(zkUtils, topic)){
+            AdminUtils.createTopic(zkUtils, topic, partitions, 
+                                  replication, topicConfig, RackAwareMode.Enforced$.MODULE$);
+        }
+        else System.out.println("Topic " + topic + "is already created");
         zkClient.close();
         }  
 }
